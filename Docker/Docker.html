@@ -1,0 +1,174 @@
+
+******************************************************************************************
+                                    DOCKER COMMANDS
+******************************************************************************************
+
+Here's a summary of the Docker commands and concepts you shared:
+
+______________________________________________________________________________________________
+
+<!-- Basic Docker Commands -->
+
+1. Run Ubuntu Container (Interactive Session):
+   ```bash
+   docker run -i -t ubuntu
+   ```
+
+2. List Running Containers:
+   ```bash
+   docker container ls
+   ```
+
+3. List All Containers (Including Stopped):
+   ```bash
+   docker container ls -a
+   ```
+
+4. Start a Container:
+   ```bash
+   docker start <container_name>
+   ```
+
+5. Stop a Container:
+   ```bash
+   docker stop <container_name>
+   ```
+
+6. Execute a Command in a Running Container:
+   ```bash
+   docker exec -it <container_name> bash
+   ```
+
+7. Run a Container with a Specific Image:
+   ```bash
+   docker run -it <image_name>
+   ```
+
+8. Execute Command in a Running Container:
+   ```bash
+   docker exec <container_name> <command>
+   ```
+
+9. List Docker Images:
+   ```bash
+   docker images
+   ```
+
+10. List Running Containers:
+    ```bash
+    docker ps
+    ```
+
+11. Start All Containers Defined in Docker Compose:
+    ```bash
+    docker compose up -d
+    ```
+
+12. Stop All Containers Defined in Docker Compose:
+    ```bash
+    docker compose down
+    ```
+
+13. Load Docker Images:
+    ```bash
+    docker images
+    ```
+
+______________________________________________________________________________________________
+
+<!-- Port Mapping -->
+
+1. Map Ports for a Container:
+   ```bash
+   docker run -it -p 8080:3000 <container_name>
+   ```
+
+______________________________________________________________________________________________
+
+<!-- Environment Variables -->
+
+1. Set Environment Variables when Running a Container:
+   ```bash
+   docker run -it -e PORT=4000 -p 4000:4000 <container_name>
+   ```
+
+______________________________________________________________________________________________
+
+<!-- Build Docker Images -->
+
+1. Build Docker Image with a Tag:
+   ```bash
+   docker build -t <tag_name> .
+   ```
+
+2. Create a Container with Specific Network:
+   ```bash
+   docker run -it --network=<network_name> --name <container_name> <image_name>
+   ```
+
+3. Use Host Network Mode (Without Exposing Ports):
+   ```bash
+   docker run -it --network=host <image_name>
+   ```
+
+4. Use None Network Mode (No External Network Access):
+   ```bash
+   docker run -it --network=none <image_name>
+   ```
+
+______________________________________________________________________________________________
+
+<!-- Docker Networking -->
+
+1. Create a Custom Docker Network (Bridge Network):
+   ```bash
+   docker network create -d bridge <network_name>
+   ```
+
+2. List Docker Networks:
+   ```bash
+   docker network ls
+   ```
+
+3. Inspect a Docker Network:
+   ```bash
+   docker network inspect <bridge_name>
+   ```
+
+______________________________________________________________________________________________
+
+<!-- Multistage Builds -->
+
+1. Multistage Dockerfile Example (Build and Production Stages):
+
+   - Build Stage:
+     ```dockerfile
+     FROM ubuntu as build
+
+     RUN apt-get update
+     RUN apt-get install -y curl
+     RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+     RUN apt-get upgrade -y
+     RUN apt-get install -y nodejs
+     RUN apt-get install -y typescript
+
+     WORKDIR /app
+     COPY package.json package-lock.json ./
+     COPY . .
+     RUN npm install
+     RUN tsc -p .  # Compile TypeScript
+     ```
+
+2. Production (Runner) Stage:
+
+     ```dockerfile
+     FROM node as runner
+
+     WORKDIR /app
+     COPY --from=build /app .  # Copy from the build stage
+     ENTRYPOINT [ "node", "server.js" ]
+     ```
+
+______________________________________________________________________________________________
+
+These commands and concepts cover a wide range of Docker features, from basic container management to advanced multistage builds and networking configurations.
