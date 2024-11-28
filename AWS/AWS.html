@@ -1,0 +1,170 @@
+The provided content includes a comprehensive list of AWS EC2, Docker, and related cloud computing commands, concepts, and examples. Below is a categorized breakdown for easy reference:
+
+______________________________________________________________________________________________
+
+<!-- AWS EC2 Commands -->
+
+<!-- Instance Access -->
+
+- Connect to EC2 Instance:
+  ```bash
+  ssh -i keyname ubuntu@<public_dns>
+  ```
+  Example:  
+  ```bash
+  ssh -i "myapp-key.pem" ubuntu@ec2-54-173-117-93.compute-1.amazonaws.com
+  ```
+
+- Change File Permission (for key file):
+  ```bash
+  chmod 400 myapp-key.pem
+  ```
+
+ <!-- Instance Details -->
+
+- Check OS Version:
+  ```bash
+  cat /etc/os-release
+  ```
+- Memory Usage:
+  ```bash
+  free -m
+  ```
+- CPU Details:
+  ```bash
+  lscpu
+  ```
+- Disk Usage:
+  ```bash
+  df -h
+  ```
+- Private IP Details:
+  ```bash
+  ip a
+  ```
+
+______________________________________________________________________________________________
+
+
+<!-- Instance Management -->
+
+<!-- Security Groups: -->
+- Firewall-like feature managing inbound/outbound rules.
+- Example rules:
+  - Allow specific IPs.
+  - Allow/deny ports.
+
+<!-- Instance Types -->
+1. General Purpose: Balanced compute, memory, networking.
+2. Compute Optimized: For high-performance compute tasks (e.g., HPC, machine learning).
+3. Memory Optimized: In-memory processing for large datasets.
+4. Accelerated Computing: Hardware accelerators for tasks like AI/graphics.
+5. Storage Optimized: High IOPS for large data sets.
+6. HPC Optimized: Scalable HPC workloads.
+
+<!-- Pricing Models -->
+1. On-demand Instances: Pay-as-you-go, flexible.
+2. Reserved Instances: Prepay with discounts (convertible & non-convertible).
+3. Spot Instances: Bidding-based, cost-effective but no reliability.
+4. Dedicated Hosts: Fully reserved physical servers.
+
+______________________________________________________________________________________________
+
+
+<!-- Docker Commands -->
+
+<!-- Basic Commands -->
+- Run an interactive container:
+  ```bash
+  docker run -it <image_name>
+  ```
+- View running containers:
+  ```bash
+  docker ps
+  ```
+- View all containers (including stopped):
+  ```bash
+  docker container ls -a
+  ```
+- Start/Stop a container:
+  ```bash
+  docker start <container_name>
+  docker stop <container_name>
+  ```
+
+<!-- Network & Port Mapping -->
+- Expose ports:
+  ```bash
+  docker run -it -p <host_port>:<container_port> <image_name>
+  ```
+- Custom bridge network:
+  ```bash
+  docker network create -d bridge <network_name>
+  ```
+
+<!-- Building Images -->
+- Build image:
+  ```bash
+  docker build -t <tag_name> .
+  ```
+- Multi-stage build example:
+  ```dockerfile
+  FROM ubuntu as build
+  RUN apt-get update
+  RUN apt-get install -y nodejs
+  WORKDIR /app
+  COPY . .
+  RUN npm install
+  RUN tsc -p .
+  FROM node as runner
+  WORKDIR /app
+  COPY --from=build /app .
+  ENTRYPOINT ["node", "server.js"]
+  ```
+
+______________________________________________________________________________________________
+
+
+<!-- Elastic Block Store (EBS) -->
+- Persistent, attachable network drive for EC2.
+- Snapshots:  
+  Create a backup that can be copied across AZs or regions.
+
+______________________________________________________________________________________________
+
+
+<!-- Elastic File System (EFS) -->
+- Managed NFS for multiple EC2 instances.
+- Multi-AZ, scalable, and highly available.
+
+______________________________________________________________________________________________
+
+
+<!-- Nginx -->
+- Test configuration:
+  ```bash
+  nginx -t
+  ```
+- Set custom HTML page:
+  ```bash
+  echo "Welcome to Bharat" | sudo tee /var/www/html/index.html
+  ```
+
+______________________________________________________________________________________________
+
+
+<!-- Scripting Example -->
+<!-- Install and Start Apache (Linux): -->
+```bash
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+```
+
+______________________________________________________________________________________________
+
+
+This structure serves as a quick-reference guide for AWS, Docker, and related tools! Let me know if you'd like any specific topic expanded further.
